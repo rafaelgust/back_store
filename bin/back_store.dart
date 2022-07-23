@@ -1,5 +1,15 @@
-import 'package:back_store/back_store.dart' as back_store;
+import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart' as io;
+import 'package:shelf_modular/shelf_modular.dart';
 
-void main(List<String> arguments) {
-  print('Hello world: ${back_store.calculate()}!');
+import 'package:back_store/src/features/app_module.dart';
+
+void main(List<String> arguments) async {
+  final modularHandler = Modular(
+    module: AppModule(),
+    middlewares: [logRequests()],
+  );
+
+  final server = await io.serve(modularHandler, '0.0.0.0', 3000);
+  print('Server started: ${server.address.address}:${server.port}');
 }
