@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: "Store"
+  description: "API store"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+paths: 
+  /users:
+    get:
+      tags:
+      - "User"
+      summary: "get list users"
+      description: ""
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /user:
+    post:
+      tags:
+      - "User"
+      summary: "create user"
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'  
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+    put:
+      tags:
+      - "User"
+      summary: "update user"
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'  
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /user/{id}:
+    get:
+      tags:
+      - "User"
+      summary: "get user by id"
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+    delete:
+      tags:
+      - "User"
+      summary: "delete user by id"
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        created_at:
+          type: string
+        modified_at:
+          type: string
+    UserCreate:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+    Exceptions: 
+      type: object
+      properties:
+        error:
+          type: string
