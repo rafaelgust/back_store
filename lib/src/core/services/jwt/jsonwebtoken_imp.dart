@@ -16,11 +16,15 @@ class JsonwebtokenService implements JwtService {
 
   @override
   void verifyToken(String token, String audience) {
-    JWT.verify(
-      token,
-      SecretKey(dotEnvService['JWT_KEY']!),
-      audience: Audience.one(audience),
-    );
+    try {
+      JWT.verify(
+        token,
+        SecretKey(dotEnvService['JWT_KEY']!),
+        audience: Audience.one(audience),
+      );
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
