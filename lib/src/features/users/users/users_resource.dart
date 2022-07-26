@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
 import 'package:intl/intl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -48,13 +49,17 @@ FutureOr<Response> _getuserById(
 
 FutureOr<Response> _createuser(
     ModularArguments arguments, Injector injector) async {
+  final database = injector.get<RemoteDatabase>();
+  final encrypt = injector.get<EncryptService>();
+
   var userData = (arguments.data as Map).cast<String, dynamic>();
+
+  userData['password'] = encrypt.generateHash(userData['password']);
   userData.addAll({
     'created_at':
         DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").format(DateTime.now())
   });
 
-  final database = injector.get<RemoteDatabase>();
   final query = await database.query(
     'INSERT INTO public.users(email, password, first_name, last_name, created_at)	VALUES ( @email , @password , @first_name , @last_name, @created_at) RETURNING id, email, first_name, last_name, created_at, modified_at;',
     variables: userData,

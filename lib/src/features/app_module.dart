@@ -19,7 +19,7 @@ class AppModule extends Module {
   List<ModularRoute> get routes => [
         Route.get('/', (Request request) => Response.ok('OK!')),
         Route.get('/documentation/**', swaggerHandle),
-        Route.resource(ProductsResource()),
         Route.resource(UsersResource()),
+        Route.resource(ProductsResource()),
       ];
 }
