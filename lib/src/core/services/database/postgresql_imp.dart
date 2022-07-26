@@ -12,6 +12,7 @@ class PostgresqlDatabase implements RemoteDatabase, Disposable {
 
   void _init() async {
     final uri = Uri.parse(dotEnv['DATABASE_URL']!);
+    print(uri);
     var connection = PostgreSQLConnection(
       uri.host,
       uri.port,
