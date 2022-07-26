@@ -5,7 +5,9 @@ import '../core/core_module.dart';
 
 import 'swagger/swagger_handle.dart';
 
-import 'users/users/users_resource.dart';
+import 'auth/resources/auth_resource.dart';
+
+import 'users/users/resources/users_resource.dart';
 
 import 'products/resources/products_resource.dart';
 
@@ -19,6 +21,7 @@ class AppModule extends Module {
   List<ModularRoute> get routes => [
         Route.get('/', (Request request) => Response.ok('OK!')),
         Route.get('/documentation/**', swaggerHandle),
+        Route.resource(AuthResource()),
         Route.resource(UsersResource()),
         Route.resource(ProductsResource()),
       ];

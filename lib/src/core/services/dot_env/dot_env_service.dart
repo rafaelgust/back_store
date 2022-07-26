@@ -1,10 +1,13 @@
 import 'dart:io';
 
 class DotEnvService {
-  DotEnvService._() {
-    _init();
+  DotEnvService({Map<String, String>? mocks}) {
+    if (mocks == null) {
+      _init();
+    } else {
+      _map.addAll(mocks);
+    }
   }
-  static DotEnvService instance = DotEnvService._();
 
   final Map<String, String> _map = {};
 

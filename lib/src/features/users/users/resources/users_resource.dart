@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
 import 'package:intl/intl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
 import 'package:back_store/src/core/services/database/database_service.dart';
+import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
 
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
 
 class UsersResource extends Resource {
   @override

@@ -11,9 +11,11 @@ import 'services/encrypt/bcrypt_imp.dart';
 class CoreModule extends Module {
   @override
   List<Bind<Object>> get binds => [
-        Bind.instance<DotEnvService>(DotEnvService.instance, export: true),
+        Bind.singleton<DotEnvService>((i) => DotEnvService(), export: true),
         Bind.singleton<EncryptService>((i) => BCryptService(), export: true),
-        Bind.singleton<RemoteDatabase>((i) => PostgresqlDatabase(i()),
-            export: true),
+        Bind.singleton<RemoteDatabase>(
+          (i) => PostgresqlDatabase(i()),
+          export: true,
+        ),
       ];
 }
