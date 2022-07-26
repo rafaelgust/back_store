@@ -6,12 +6,17 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local server
+tags:
+  - name: "Auth"
+    description: "path auth"
+  - name: "User"
+    description: "path users"
 
 paths:
   /auth/login:
     get:
       tags:
-      - "auth"
+      - "Auth"
       summary: "login with email/password"
       description: ""
       security:
@@ -26,6 +31,30 @@ paths:
                 items: 
                   $ref: "#/components/schemas/Tokenization"
         "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /auth/check_token:
+    get:
+      tags:
+      - "Auth"
+      summary: "Auth - Check Bearer Token"
+      description: ""
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+        "403":
           description: "Invalid status value"
           content: 
             application/json:
@@ -83,6 +112,8 @@ paths:
       - "User"
       summary: "update user"
       description: ""
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -136,6 +167,8 @@ paths:
       - "User"
       summary: "delete user by id"
       description: ""
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -163,6 +196,11 @@ components:
     basicAuth:
       type: http
       scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Header authorization accessToken"
   schemas:
     Tokenization:
       type: object

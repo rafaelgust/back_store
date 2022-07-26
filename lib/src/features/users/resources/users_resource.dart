@@ -1,13 +1,15 @@
+import 'package:back_store/src/core/services/database/database_service.dart';
+import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:back_store/src/core/services/database/database_service.dart';
-import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
+import '../guard/user_guard.dart';
 
-import '../../models/user_model.dart';
+import '../models/user_model.dart';
 
 class UsersResource extends Resource {
   @override
@@ -15,8 +17,8 @@ class UsersResource extends Resource {
         Route.get('/users', _getUsers),
         Route.get('/user/:id', _getuserById),
         Route.post('/user', _createuser),
-        Route.put('/user', _updateuser),
-        Route.delete('/user/:id', _deleteuser),
+        Route.put('/user', _updateuser, middlewares: [UserGuard()]),
+        Route.delete('/user/:id', _deleteuser, middlewares: [UserGuard()]),
       ];
 }
 
