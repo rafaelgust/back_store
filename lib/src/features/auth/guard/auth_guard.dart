@@ -8,6 +8,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
 class AuthGuard extends ModularMiddleware {
+  final bool isRefreshToken;
+
+  AuthGuard({this.isRefreshToken = false});
   @override
   Handler call(Handler handler, [ModularRoute? route]) {
     final extractor = Modular.get<RequestExtractor>();
@@ -21,7 +24,7 @@ class AuthGuard extends ModularMiddleware {
       final token = extractor.getAuthorizationBearer(request);
 
       try {
-        jwt.verifyToken(token, 'accessToken');
+        jwt.verifyToken(token, isRefreshToken ? 'refreshToken' : 'accessToken');
         return handler(request);
       } catch (e) {
         return Response.forbidden(jsonEncode({'error': e.toString()}));

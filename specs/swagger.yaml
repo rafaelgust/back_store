@@ -17,7 +17,7 @@ paths:
     get:
       tags:
       - "Auth"
-      summary: "login with email/password"
+      summary: "Login with email/password"
       description: ""
       security:
         - basicAuth: []
@@ -31,6 +31,35 @@ paths:
                 items: 
                   $ref: "#/components/schemas/Tokenization"
         "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /auth/update_password:
+    put:
+      tags:
+      - "Auth"
+      summary: "Auth - update password"
+      description: ""
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserChangePassword'
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "403":
           description: "Invalid status value"
           content: 
             application/json:
@@ -54,6 +83,29 @@ paths:
                 properties:
                   message: 
                     type: string
+        "403":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /auth/refresh_token:
+    get:
+      tags:
+      - "Auth"
+      summary: "Auth - Refresh Bearer Token"
+      description: ""
+      security:
+        - bearerRefreshAuth: []
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/Tokenization"
         "403":
           description: "Invalid status value"
           content: 
@@ -201,6 +253,11 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: "Header authorization accessToken"
+    bearerRefreshAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Header authorization refreshToken"
   schemas:
     Tokenization:
       type: object
@@ -234,6 +291,13 @@ components:
         first_name:
           type: string
         last_name:
+          type: string
+    UserChangePassword:
+      type: object
+      properties:
+        password:
+          type: string
+        new_password:
           type: string
     UserUpdate:
       type: object

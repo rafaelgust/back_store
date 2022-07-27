@@ -8,13 +8,14 @@ import '../models/tokenization_model.dart';
 
 abstract class AuthRepository {
   final AuthDatasource datasource;
-
   final EncryptService encrypt;
   final JwtService jwt;
 
   AuthRepository(this.encrypt, this.jwt, this.datasource);
 
   Future<TokenizationModel> login(LoginModel credentials);
+  Future<TokenizationModel> refreshToken(String token);
+  Future<void> updatePassword(String token, Map data);
 }
 
 class AuthRepositoryImp implements AuthRepository {
@@ -40,6 +41,28 @@ class AuthRepositoryImp implements AuthRepository {
     return _generateToken(payload);
   }
 
+  @override
+  Future<TokenizationModel> refreshToken(String token) async {
+    var oldPayload = jwt.getPayload(token);
+    final newPayload = await datasource.verifyIdById(oldPayload['id']);
+
+    return _generateToken(newPayload);
+  }
+
+  @override
+  Future<void> updatePassword(String token, Map data) async {
+    var payload = jwt.getPayload(token);
+    final password = await datasource.getHashPassById(payload['id']);
+
+    if (!encrypt.checkHash(data['password'], password)) {
+      throw AuthExceptions(403, 'Your password is incorrect');
+    }
+
+    String newPassword = encrypt.generateHash(data['new_password']);
+
+    await datasource.updatePasswordById(payload['id'], newPassword);
+  }
+
   TokenizationModel _generateToken(Map payload) {
     payload['exp'] = _expiration(Duration(minutes: 5));
     final accessToken = jwt.generateToken(payload, 'accessToken');
@@ -47,7 +70,9 @@ class AuthRepositoryImp implements AuthRepository {
     final refreshToken = jwt.generateToken(payload, 'refreshToken');
 
     return TokenizationModel(
-        accessToken: accessToken, refreshToken: refreshToken);
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    );
   }
 
   int _expiration(Duration duration) {
