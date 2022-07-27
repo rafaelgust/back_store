@@ -4,10 +4,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
 import 'auth/auth_module.dart';
+import 'user/user_module.dart';
 
 import 'swagger/swagger_handle.dart';
-
-import 'users/resources/users_resource.dart';
 
 import 'products/resources/products_resource.dart';
 
@@ -22,7 +21,7 @@ class AppModule extends Module {
         Route.get('/', (Request request) => Response.ok('OK!')),
         Route.get('/documentation/**', swaggerHandle),
         Route.module('/auth', module: AuthModule()),
-        Route.resource(UsersResource()),
+        Route.module('/user', module: UserModule()),
         Route.resource(ProductsResource()),
       ];
 }

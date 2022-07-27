@@ -112,27 +112,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Exceptions"
-  /users:
-    get:
-      tags:
-      - "User"
-      summary: "get list users"
-      description: ""
-      responses:
-        "200":
-          description: "successful operation"
-          content: 
-            application/json:
-              schema:
-                type: array
-                items: 
-                  $ref: "#/components/schemas/User"
-        "400":
-          description: "Invalid status value"
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Exceptions"
   /user:
     post:
       tags:
@@ -171,6 +150,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserUpdate'  
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exceptions"
+  /user/:
+    get:
+      tags:
+      - "User"
+      summary: "get list users"
+      description: ""
       responses:
         "200":
           description: "successful operation"
