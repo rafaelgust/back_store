@@ -8,12 +8,8 @@ import 'resources/user_resource.dart';
 class UserModule extends Module {
   @override
   List<Bind<Object>> get binds => [
-        Bind.singleton<UserDatasource>(
-          (i) => UserDatasourcePostgreSQL(i()),
-        ),
-        Bind.singleton<UserRepository>(
-          (i) => UserRepositoryImp(i(), i()),
-        ),
+        Bind.singleton<UserDatasource>((i) => UserDatasourcePostgreSQL(i())),
+        Bind.singleton<UserRepository>((i) => UserRepositoryImp(i(), i())),
       ];
 
   @override

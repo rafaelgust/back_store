@@ -97,10 +97,14 @@ FutureOr<Response> _deleteuser(
 ) async {
   final repository = injector.get<UserRepository>();
   final id = int.parse(arguments.params['id']);
-  await repository.deleteUser(id);
 
-  return Response.ok(
-    jsonEncode({"message": "User $id has been deleted"}),
-    headers: {"Content-Type": "application/json"},
-  );
+  try {
+    await repository.deleteUser(id);
+    return Response.ok(
+      jsonEncode({"message": "User $id has been deleted"}),
+      headers: {"Content-Type": "application/json"},
+    );
+  } on UserException catch (e) {
+    return Response(e.statusCode, body: e.toJson());
+  }
 }

@@ -1,0 +1,130 @@
+components:
+  User:
+    post:
+      tags:
+      - "User"
+      summary: "create user"
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './user_schemas.yaml#/components/schemas/UserCreate'  
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "./user_schemas.yaml#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "../../swagger.yaml#/components/schemas/Exceptions"
+    put:
+      tags:
+      - "User"
+      summary: "update user"
+      description: ""
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './user_schemas.yaml#/components/schemas/UserUpdate'  
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "./user_schemas.yaml#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "../../swagger.yaml#/components/schemas/Exceptions"
+    get:
+      tags:
+      - "User"
+      summary: "get list users"
+      description: ""
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "./user_schemas.yaml#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "../../swagger.yaml#/components/schemas/Exceptions"
+  UserId:
+    get:
+      tags:
+      - "User"
+      summary: "get user by id"
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "./user_schemas.yaml#/components/schemas/User"
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "../../swagger.yaml#/components/schemas/Exceptions"
+    delete:
+      tags:
+      - "User"
+      summary: "delete user by id"
+      description: ""
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          content: 
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Invalid status value"
+          content: 
+            application/json:
+              schema:
+                $ref: "../../swagger.yaml#/components/schemas/Exceptions"
+  
