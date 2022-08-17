@@ -1,4 +1,3 @@
-import 'package:back_store/src/core/services/encrypt/encrypt_service.dart';
 import 'package:back_store/src/core/services/request_extractor/request_extractor_service.dart';
 
 import 'dart:async';
@@ -16,12 +15,9 @@ class AuthResource extends Resource {
   @override
   List<Route> get routes => [
         Route.get('/login', _login),
-        Route.put('/update_password', _updatePassword, middlewares: [
-          AuthGuard(),
-        ]),
-        Route.get('/check_token', _checkToken, middlewares: [
-          AuthGuard(),
-        ]),
+        Route.put('/update_password', _updatePassword,
+            middlewares: [AuthGuard()]),
+        Route.get('/check_token', _checkToken, middlewares: [AuthGuard()]),
         Route.get('/refresh_token', _refreshToken, middlewares: [
           AuthGuard(isRefreshToken: true),
         ]),
@@ -40,9 +36,9 @@ class AuthResource extends Resource {
     }
   }
 
-  FutureOr<Response> _checkToken(Injector injector) async {
-    return Response.ok(jsonEncode({'ok': 'checkToken'}));
-  }
+  FutureOr<Response> _checkToken(Injector injector) async =>
+      Response.ok(jsonEncode({'message': 'checked'}));
+  //guard middlewares is check the token
 
   FutureOr<Response> _refreshToken(Request request, Injector injector) async {
     final authRepository = injector.get<AuthRepository>();

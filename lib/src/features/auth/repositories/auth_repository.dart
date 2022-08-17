@@ -76,7 +76,7 @@ class AuthRepositoryImp implements AuthRepository {
   }
 
   int _expiration(Duration duration) {
-    final expiresDate = DateTime.now().add(Duration(seconds: 30));
+    final expiresDate = DateTime.now().add(duration);
     return Duration(milliseconds: expiresDate.millisecondsSinceEpoch).inSeconds;
   }
 }
